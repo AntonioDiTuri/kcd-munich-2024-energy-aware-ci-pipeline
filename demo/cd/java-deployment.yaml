@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: my-java-app:latest 
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-service
+spec:
+  selector:
+    app: hello-world
+  ports:
+  - protocol: TCP
+    port: 80  # External port for accessing the service
+    targetPort: 8080  # Port within the Pod to route traffic
+  type: NodePort  # Exposes the service on a random node port
+
