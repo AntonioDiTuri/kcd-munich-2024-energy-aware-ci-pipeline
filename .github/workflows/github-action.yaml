@@ -6,7 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cd demo/fibonacci && docker build . -t test
-      - run: kind load docker-image test
-      - run: cd demo/fibonacci && kubectl apply -f pod.yaml
-      # - run: kubectl apply -f pod-ineff.yaml
+      - run: cd demo/fibonacci && docker build . -t test # build docker image
+      - run: kind load docker-image test # load docker image into kind
+      - run: cd demo/fibonacci && kubectl apply -f pod.yaml # deploy fibonacci on k8s
+      # add the port forward add to prometheus
+      - run: curl 'http://localhost:9090/api/v1/query?query=kepler_container_joules_total\{pod_name="fibonacci-inefficient"\}' > test.json\n # 
+      - run: jq '.data.result[0].value[1]' test.json # check once this idle modle vs dynamic
+      # save the data somewhere into the db
+      x 
