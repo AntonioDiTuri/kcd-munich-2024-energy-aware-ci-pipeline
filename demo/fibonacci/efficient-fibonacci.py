@@ -1,3 +1,6 @@
+import os 
+import sys
+
 def efficient_fibonacci(n):
   """
   This function calculates the nth Fibonacci number using an iterative approach.
@@ -13,6 +16,7 @@ def efficient_fibonacci(n):
 
 # Example usage (can be included in the same file for demo purposes)
 if __name__ == "__main__":
-  n = int(input("Enter a number: "))
-  result = efficient_fibonacci(n)
+  sys.set_int_max_str_digits(100000)
+  n = os.getenv("INPUT")
+  result = efficient_fibonacci(int(n))
   print(f"Fibonacci of {n} is: {result}")

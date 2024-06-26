@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efficient-fibonacci
+spec:
+  containers:
+  - name: efficient-fibonacci
+    image: efficient-fibonacci:latest
+    imagePullPolicy: Never
+    env:
+    - name: INPUT
+      value: "200000"
+    # envFrom:
+    # - configMapRef:
+    #     name: stress-config

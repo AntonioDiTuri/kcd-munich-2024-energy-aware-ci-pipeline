@@ -1,4 +1,6 @@
 # inefficient_fibonacci.py
+import os
+
 def inefficient_fibonacci(n):
   if n <= 1:
     return n
@@ -8,6 +10,6 @@ def calculate_fibonacci(n):
   return inefficient_fibonacci(n)
 
 if __name__ == "__main__":
-  n = int(input("Enter a number: "))
-  result = calculate_fibonacci(n)
+  n = os.getenv("INPUT")
+  result = calculate_fibonacci(int(n))
   print(f"Fibonacci of {n} is: {result}")
