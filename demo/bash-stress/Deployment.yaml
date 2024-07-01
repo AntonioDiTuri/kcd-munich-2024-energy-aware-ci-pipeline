@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stress-config
+data:
+  CPU_COUNT: "3"
+  IO: "3" # spawn N workers spinning on sync()
+  VM: "30" # spawn N workers spinning on malloc()/free()
+  DURATION: "60s"         
+  SLEEP_INTERVAL: "5s"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress-pod
+spec:
+  containers:
+  - name: stress
+    image: stress-loop:latest
+    imagePullPolicy: Never
+    envFrom:
+    - configMapRef:
+        name: stress-config

@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: inefficient-fibonacci
+spec:
+  template:
+    spec:
+      containers:
+      - name: inefficient-fibonacci
+        image: inefficient-fibonacci:latest
+        imagePullPolicy: Never
+        env:
+        - name: INPUT
+          value: "995"
+      restartPolicy: Never

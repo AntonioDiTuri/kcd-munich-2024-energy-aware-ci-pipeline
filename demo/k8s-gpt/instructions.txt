@@ -1,0 +1,3 @@
+helm install my-k8sgpt-operator k8sgpt/k8sgpt-operator --version 0.1.6
+kubectl create secret generic k8sgpt-sample-secret --from-literal=openai-api-key=$OPENAI_TOKEN
+k apply -f k8s-gpt/app.yaml
