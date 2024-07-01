@@ -1,5 +1,7 @@
 import os 
 import sys
+import time
+
 
 def efficient_fibonacci(n):
   """
@@ -9,7 +11,10 @@ def efficient_fibonacci(n):
   a, b = 0, 1
 
   # Iterate for n times, calculating the next Fibonacci number
-  for _ in range(n):
+  for i in range(n):
+    print("iteration: "+str(i))
+    print("a= " +str(a) + " b= " +str(b))
+    time.sleep(0.3)
     a, b = b, a + b
 
   return a

@@ -1,0 +1,14 @@
+name: GitHub Actions Demo
+run-name: I am testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # - run: redis-cli -h localhost -p 6378 -a UUeBDxH6ea HSET  "pod_joules" "fibonacci" "999999999999999"
+      - run: ./deploy.sh inefficient-fibonacci
+      - run: sleep 60
+      - run: ./save-to-redis.sh inefficient-fibonacci
+      
+    

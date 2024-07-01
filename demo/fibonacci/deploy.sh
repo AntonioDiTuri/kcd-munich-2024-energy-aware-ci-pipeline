@@ -1,8 +1,7 @@
 #!/bin/sh
 
-export IMAGE_NAME=efficient-fibonacci:latest
-
-docker build . -t $IMAGE_NAME
+export IMAGE_NAME="$1:latest"
+docker build . -t $IMAGE_NAME --build-arg arg=$1
 kind load docker-image $IMAGE_NAME
-kubectl delete -f pod.yaml --force
-kubectl apply -f pod.yaml
+kubectl delete -f "$1-job.yaml" --force
+kubectl apply -f "$1-job.yaml"

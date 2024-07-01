@@ -5,49 +5,56 @@ What we will do together:
 
 1. Set up a local cluster & install Prometheus Grafana
 2. Install Kepler
-3. Deploy a custom application
+3. Install Redis
+4. Install act
+5. Run the pipeline
 
 ## Cluster 
 
 Install kind following the quick-start instructions: https://kind.sigs.k8s.io/docs/user/quick-start/#installation 
 
-From [Kepler's instructions](https://sustainable-computing.io/installation/local-cluster/#install-kind) to install Kind cluster: 
+Clone kepler repo:
+```
+git clone https://github.com/sustainable-computing-io/kepler.git
+```
 
+Install cluster with Prometheus & Grafana:
 ```
-export CLUSTER_NAME="cluster-demo"
-kind create cluster --name=$CLUSTER_NAME --config=./local-cluster-config.yaml
+cd kepler && make cluster-up
 ```
+
 
 Install metrics server: 
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl patch -n kube-system deployment metrics-server --type=json \
+  -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
 ```
 
-### Install Prometheus and Kepler
-
-Install helm: Please refer to [Helm's documentation](https://helm.sh/docs/intro/install/) to get started.
-
-Install Kepler & Kube Prometheus Stack: [Kepler's installation with Helm](https://sustainable-computing.io/installation/kepler-helm/). 
-
-Install Kube Prometheus Stack
+Install Kepler:
 ```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-
-helm install prometheus prometheus-community/kube-prometheus-stack \
-    --namespace monitoring \
-    --create-namespace \
-    --wait
+make build-manifest OPTS="PROMETHEUS_DEPLOY"
+kubectl apply -f _output/generated-manifest/deployment.yaml
 ```
 
-Install Kepler
+Install Redis:
 ```
-helm repo add kepler https://sustainable-computing-io.github.io/kepler-helm-chart
-helm repo update
+helm install my-redis bitnami/redis
+```
 
-helm install kepler kepler/kepler \
-    --namespace kepler \
-    --create-namespace \
-    --set serviceMonitor.enabled=true \
-    --set serviceMonitor.labels.release=prometheus \
+Port forward to Promethus, Grafana and Kepler:
+```
+kubectl port-forward --address localhost -n kepler service/kepler-exporter 9102:9102 &
+kubectl port-forward --address localhost -n monitoring service/prometheus-k8s 9090:9090 &
+kubectl port-forward --address localhost -n monitoring service/grafana 3000:3000 &
+```
+
+Install Act
+```
+brew install act
+```
+
+Run pipeline
+```
+act -P ubuntu-latest=-self-hosted 
 ```

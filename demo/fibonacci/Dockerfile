@@ -1,6 +1,8 @@
 FROM python:latest
 WORKDIR /app
-COPY inefficient-fibonacci.py ./app.py
+ARG arg
+ENV use_case=$arg
+COPY ${use_case}.py ./app.py
 CMD ["python", "app.py"]
 
 
