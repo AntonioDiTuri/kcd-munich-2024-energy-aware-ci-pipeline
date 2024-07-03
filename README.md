@@ -1,5 +1,16 @@
 # kcd-munich-2024
 
+## Prerequisites:
+
+Kind cluster and Kepler are installed using make files in the Kepler repo.
+The make file works if the following are installed:
+
+- Golang
+- Docker
+- Kubectl
+
+## Overview:
+
 This is a demo about a possible demonstration of Kepler in the realm of CI/CD pipelines.
 What we will do together: 
 
