@@ -1,4 +1,4 @@
-# kcd-munic-2024
+# kcd-munich-2024
 
 This is a demo about a possible demonstration of Kepler in the realm of CI/CD pipelines.
 What we will do together: 
