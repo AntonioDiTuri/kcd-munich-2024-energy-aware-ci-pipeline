@@ -76,6 +76,21 @@ Run pipeline
 act -P ubuntu-latest=-self-hosted 
 ```
 
+The act pipeline will deploy the inefficient fibonacci pod. It uses recursion and it is very slow.
+You can check how much energy it consumes by checking this metric:
+
+```
+kepler_container_joules_total{container_name="inefficient-fibonacci",mode="dynamic"}
+```
+
+By modifying the [github action file](https://github.com/AntonioDiTuri/kcd-munich-2024-carbon-aware-ci-pipeline/blob/main/demo/fibonacci/.github/workflows/github-action.yaml) you can then run the fibonacci-efficient pod by just modifying the pipeline to use efficient-fibonacci as input variable.
+
+You can then compare the metrics of the energy.
+
+The simple idea is that if you save the energy metric into a db (redis for semplicity) [you can use the value to structure some logic that would block the deployment](https://github.com/AntonioDiTuri/kcd-munich-2024-carbon-aware-ci-pipeline/blob/main/demo/fibonacci/save-to-redis.sh).
+In this case it will delete the pod. 
+
+
 ## Possible extensions
 
 While doing the demo I was suggested to offer a virtual environment setup to avoid the installation of too many binaries.
